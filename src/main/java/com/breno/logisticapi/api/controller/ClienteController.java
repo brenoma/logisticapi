@@ -2,6 +2,8 @@ package com.breno.logisticapi.api.controller;
 
 import com.breno.logisticapi.domain.model.Cliente;
 import com.breno.logisticapi.domain.repository.ClienteRepository;
+import com.breno.logisticapi.domain.service.CatalogoClienteService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
 
-    @Autowired
     private ClienteRepository clienteRepository;
+    private CatalogoClienteService catalogoClienteService;
 
     @GetMapping
     public List<Cliente> listar() {
@@ -41,7 +44,7 @@ public class ClienteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+        return catalogoClienteService.salvar(cliente);
     }
 
     @PutMapping("/{clienteId}")
@@ -51,7 +54,8 @@ public class ClienteController {
         }
 
         cliente.setId(clienteId);
-        cliente = clienteRepository.save(cliente);
+        cliente = catalogoClienteService.salvar(cliente);
+
 
         return ResponseEntity.ok(cliente);
     }
@@ -62,7 +66,7 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
 
-        clienteRepository.deleteById(clienteId);
+        catalogoClienteService.excluir(clienteId);
 
         return ResponseEntity.noContent().build();
     }
