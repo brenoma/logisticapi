@@ -1,4 +1,4 @@
-package com.breno.logisticapi.controller;
+package com.breno.logisticapi.api.controller;
 
 import com.breno.logisticapi.domain.model.Cliente;
 import com.breno.logisticapi.domain.repository.ClienteRepository;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
